@@ -1,4 +1,4 @@
-# Lama Dev School Management Dashboard
+#  Management Dashboard
 
 ## Getting Started
 
