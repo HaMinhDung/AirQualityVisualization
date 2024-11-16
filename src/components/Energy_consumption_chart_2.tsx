@@ -1,53 +1,86 @@
 "use client";
-import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 
 const locationData = [
-  { name: "Fendi", count: 20, fill: "#FF6384" },
-  { name: "2F", count: 25, fill: "#36A2EB" },
-  { name: "3F", count: 15, fill: "#FFCE56" },
-  { name: "4F", count: 10, fill: "#4BC0C0" },
-  { name: "B2", count: 20, fill: "#9966FF" },
-  { name: "B1", count: 10, fill: "#FF9F40" },
+  { name: "Fendi", count: 20 },
+  { name: "2F", count: 25 },
+  { name: "3F", count: 15 },
+  { name: "4F", count: 10 },
+  { name: "B2", count: 20 },
+  { name: "B1", count: 10 },
 ];
+
+const COLORS = [
+  "#FF6384",
+  "#36A2EB",
+  "#FFCE56",
+  "#4BC0C0",
+  "#9966FF",
+  "#FF9F40",
+];
+
+const total = locationData.reduce((sum, item) => sum + item.count, 0);
 
 const ECbLChart2 = () => {
   return (
-    <div className="bg-white rounded-xl w-full h-full p-4">
-      {/* TITLE */}
+    <div className="bg-white rounded-xl w-full h-full p-3"> {/* Adjusted padding and size */}
       <div className="flex justify-between items-center">
-        <h1 className="text-lg font-semibold">Energy Consumption by Location</h1>
+        <h1 className="text-md font-semibold">Energy Consumption by Location</h1>
       </div>
-      {/* CHART */}
-      <div className="relative w-full h-[75%]">
-        <ResponsiveContainer>
-          <RadialBarChart
-            cx="50%"
-            cy="50%"
-            innerRadius="70%"
-            outerRadius="100%"
-            barSize={32}
-            data={locationData}
-          >
-            <RadialBar dataKey="count" cornerRadius={10} />
-          </RadialBarChart>
-        </ResponsiveContainer>
-        {/* Display Total Consumption in Center */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <h2 className="text-lg font-semibold">1,234 KWh</h2>
-        </div>
-      </div>
-      {/* LEGEND */}
-      <div className="flex justify-center gap-4 mt-4">
-        {locationData.map((item) => (
-          <div key={item.name} className="flex flex-col items-center gap-1">
-            <div
-              className="w-5 h-5 rounded-full"
-              style={{ backgroundColor: item.fill }}
-            />
-            <h1 className="font-bold">{item.count}</h1>
-            <h2 className="text-xs text-gray-500">{item.name}</h2>
+      <div className="flex w-full h-[60%] mt-4"> {/* Flex container for chart and labels */}
+        {/* Chart Container */}
+        <div className="w-2/3 h-full flex justify-center items-center relative"> {/* Added relative positioning */}
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={locationData}
+                dataKey="count"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                innerRadius="70%"  // Set inner radius to create donut
+                outerRadius="90%"  // Set outer radius to define the thickness of the donut
+                fill="#8884d8"
+                cornerRadius={10}
+              >
+                {locationData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+            </PieChart>
+          </ResponsiveContainer>
+          {/* Center Text inside the donut */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+            <h2 className="text-md font-semibold">1,234 KWh</h2>
           </div>
-        ))}
+        </div>
+        
+        {/* Labels and Percentages */}
+        <div className="w-1/3 h-full flex flex-col justify-between pl-4">
+          {locationData.map((item, index) => (
+            <div
+              key={item.name}
+              className="flex items-center justify-between w-full mb-2"
+            >
+              <div className="flex items-center">
+                <div
+                  className="w-4 h-4 rounded-full"
+                  style={{ backgroundColor: COLORS[index % COLORS.length] }}
+                />
+                <span className="ml-2 font-semibold">{item.name}</span>
+              </div>
+              <span className="text-sm text-gray-500">
+                {((item.count / total) * 100).toFixed(1)}%
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
