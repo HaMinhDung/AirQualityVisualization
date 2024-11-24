@@ -2,12 +2,18 @@
 import DataCard from "@/components/DataCard";
 import ECbLChart from "@/components/Energy_consumption_chart";
 import ECbLChart2 from "@/components/Energy_consumption_chart_2";
+import DataAnalyticsBar from "@/components/DataAnalyticsBar";
 
 const AdminPage = () => {
   return (
-    <div className="w-full h-screen flex flex-col overflow-y-auto">
-      {/* MAIN CONTENT - Adjusted height */}
-      <div className="flex-1 h-[calc(100vh-150px)] grid grid-cols-2 grid-rows-2 gap-3 p-4">
+    <div className="w-full h-screen flex flex-col">
+      {/* DATA ANALYTICS BAR */}
+      <div className="w-full">
+        <DataAnalyticsBar />
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div className="flex-1 grid grid-cols-2 grid-rows-2 gap-3 p-4">
         {/* TOP LEFT: DATA CARDS */}
         <div className="bg-gray-200 rounded-lg shadow-lg p-3 grid grid-cols-2 gap-3 h-[85%]"> 
           <DataCard type="Energy" data_number={1234} changes={5} />
