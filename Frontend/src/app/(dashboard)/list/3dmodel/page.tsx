@@ -1,118 +1,141 @@
 "use client";
-import DataCard from "@/components/DataCard";
-import { useEffect, useState } from "react";
-import Papa from "papaparse";
+import { Canvas } from "@react-three/fiber";
+import { Html, useGLTF } from "@react-three/drei";
+import { useState } from "react";
+import { motion } from "framer-motion";
+import BarChartComponent from "@/components/3dModelBarChart";
 
-const AdminPage = () => {
-  const [sensor1Data, setSensor1Data] = useState({
-    AQI_CN: 0,
-    PM25: 0,
-    PM10: 0,
-    PM1: 0,
-    CO2: 0,
-    TempC: 0,
-    TempF: 0,
-    Humidity: 0,
-  });
+const RoomVisualizationPage = () => {
+  const [showDataAnalytics, setShowDataAnalytics] = useState(false);
 
-  const [sensor2Data, setSensor2Data] = useState({
-    AQI_CN: 0,
-    PM25: 0,
-    PM10: 0,
-    PM1: 0,
-    CO2: 0,
-    TempC: 0,
-    TempF: 0,
-    Humidity: 0,
-  });
+  const temperatureData = [
+    { name: "Mon", value: 45 },
+    { name: "Tue", value: 50 },
+    { name: "Wed", value: 55 },
+    { name: "Thu", value: 40 },
+    { name: "Fri", value: 60 },
+  ];
+  const humidityData = [
+    { name: "Mon", value: 70 },
+    { name: "Tue", value: 65 },
+    { name: "Wed", value: 75 },
+    { name: "Thu", value: 80 },
+    { name: "Fri", value: 72 },
+  ];
+  const pm25Data = [
+    { name: "Mon", value: 30 },
+    { name: "Tue", value: 35 },
+    { name: "Wed", value: 28 },
+    { name: "Thu", value: 33 },
+    { name: "Fri", value: 25 },
+  ];
 
-  useEffect(() => {
-    // Fetch and parse CSV data for Sensor 1
-    fetch('/data.csv')
-      .then(response => response.text())
-      .then(data => {
-        const parsedData = Papa.parse(data, { header: true }).data[0];
-        setSensor1Data({
-          AQI_CN: parsedData['AQI CN'],
-          PM25: parsedData['PM2.5 (ug/m3)'],
-          PM10: parsedData['PM10 (ug/m3)'],
-          PM1: parsedData['PM1 (ug/m3)'],
-          CO2: parsedData['CO2 (ppm)'],
-          TempC: parsedData['Temperature (Celsius)'],
-          TempF: parsedData['Temperature (Fahrenheit)'],
-          Humidity: parsedData['Humidity (%)'],
-        });
-      });
+  const toggleDataAnalytics = () => {
+    setShowDataAnalytics((prev) => !prev);
+  };
 
-    // Fetch and parse CSV data for Sensor 2
-    fetch('/data2.csv')
-      .then(response => response.text())
-      .then(data => {
-        const parsedData = Papa.parse(data, { header: true }).data[0];
-        setSensor2Data({
-          AQI_CN: parsedData['AQI CN'],
-          PM25: parsedData['PM2.5 (ug/m3)'],
-          PM10: parsedData['PM10 (ug/m3)'],
-          PM1: parsedData['PM1 (ug/m3)'],
-          CO2: parsedData['CO2 (ppm)'],
-          TempC: parsedData['Temperature (Celsius)'],
-          TempF: parsedData['Temperature (Fahrenheit)'],
-          Humidity: parsedData['Humidity (%)'],
-        });
-      });
-  }, []);
+  const Model = () => {
+    const gltf = useGLTF("/Room1.glb");
+    return (
+      <>
+        <primitive object={gltf.scene} scale={1} />
+        <mesh position={[1, 1, 0]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial color="red" />
+          <Html distanceFactor={10}>
+            <div className="p-1 bg-gray-800 text-white text-xs rounded">
+              Sensor 1
+            </div>
+          </Html>
+        </mesh>
+        <mesh position={[-1, 1, 0]}>
+          <sphereGeometry args={[0.1, 32, 32]} />
+          <meshStandardMaterial color="blue" />
+          <Html distanceFactor={10}>
+            <div className="p-1 bg-gray-800 text-white text-xs rounded">
+              Sensor 2
+            </div>
+          </Html>
+        </mesh>
+      </>
+    );
+  };
 
   return (
-    <div className="w-full h-screen flex flex-col overflow-y-auto">
-      {/* MAIN CONTENT - Adjusted height */}
-      <div className="flex-1 h-[calc(100vh-150px)] grid grid-rows-2 gap-3 p-4">
-        
-        {/* SENSOR 1 */}
-        <div>
-          <h2 className="text-lg font-bold mb-2">Sensor 1</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {/* TOP LEFT: DATA CARDS */}
-            <div className="bg-gray-200 rounded-lg shadow-lg p-3 grid grid-cols-2 gap-3 h-[100%]"> 
-              <DataCard type="AQI CN" data_number={sensor1Data.AQI_CN} changes={-1}/>
-              <DataCard type="PM2.5" data_number={sensor1Data.PM25} unit="ug/m3" changes={1} />
-              <DataCard type="PM10" data_number={sensor1Data.PM10} unit="ug/m3" changes={0}/>
-              <DataCard type="PM1" data_number={sensor1Data.PM1} unit="ug/m3" changes={-3}/>
-            </div>
-        
-            {/* TOP RIGHT: DATA CARDS */}
-            <div className="bg-gray-200 rounded-lg shadow-lg p-3 grid grid-cols-2 gap-3 h-[100%]">
-              <DataCard type="CO2" data_number={sensor1Data.CO2} unit="ppm" changes={3}/>
-              <DataCard type="Temperature (C)" data_number={sensor1Data.TempC} unit="°C" changes={-2}/>
-              <DataCard type="Temperature (F)" data_number={sensor1Data.TempF} unit="°F" changes={1}/>
-              <DataCard type="Humidity" data_number={sensor1Data.Humidity} unit="%" changes={2}/>
-            </div>
-          </div>
+    <div className="relative bg-gradient-to-b from-gray-900 to-gray-200">
+      {/* Main Content */}
+      <div className="relative" style={{ width: "100%", height: "100vh" }}>
+        <Canvas
+          camera={{
+            position: [1.9, 11.38, 13.44],
+            rotation: [
+              -52.98 * (Math.PI / 180),
+              -0.71 * (Math.PI / 180),
+              -0.95 * (Math.PI / 180),
+            ],
+            zoom: 1.0,
+            fov: 50,
+          }}
+          shadows
+        >
+          <ambientLight intensity={0.5} />
+          <pointLight position={[10, 10, 10]} />
+          <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
+          <Model />
+        </Canvas>
+
+        {/* Show More Button */}
+        <div className="absolute top-4 right-4 z-50">
+          <span
+            onClick={toggleDataAnalytics}
+            className="text-white underline cursor-pointer"
+          >
+            {showDataAnalytics ? "Collapse" : "Show More"}
+          </span>
         </div>
 
-        {/* SENSOR 2 */}
-        <div>
-          <h2 className="text-lg font-bold mb-2">Sensor 2</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {/* BOTTOM LEFT: DATA CARDS */}
-            <div className="bg-gray-200 rounded-lg shadow-lg p-3 grid grid-cols-2 gap-3 h-[100%]">
-              <DataCard type="AQI CN" data_number={sensor2Data.AQI_CN}  changes={0}/>
-              <DataCard type="PM2.5" data_number={sensor2Data.PM25} unit="ug/m3" changes={1}/>
-              <DataCard type="PM10" data_number={sensor2Data.PM10} unit="ug/m3" changes={-3}/>
-              <DataCard type="PM1" data_number={sensor2Data.PM1} unit="ug/m3" changes={7}/>
+        {/* Shown Data */}
+        <motion.div
+          initial={{ width: 0, opacity: 0 }}
+          animate={
+            showDataAnalytics
+              ? { width: "30%", opacity: 1 }
+              : { width: 0, opacity: 0 }
+          }
+          transition={{ duration: 0.4 }}
+          className={`absolute top-0 h-full bg-gradient-to-l from-black to-transparent z-40`}
+          style={{
+            right: showDataAnalytics ? 0 : undefined,
+            height: "calc(100vh - 4rem)",
+            marginTop: "4rem",
+          }}
+        >
+          {showDataAnalytics && (
+            <div className="p-6 h-full overflow-y-auto">
+              <h2 className="text-lg font-semibold text-white mb-4">
+                Data Analytics
+              </h2>
+              <BarChartComponent
+                data={temperatureData}
+                title="Temperature"
+                barColor="#FF5733"
+              />
+              <BarChartComponent
+                data={humidityData}
+                title="Humidity"
+                barColor="#33C9FF"
+              />
+              <BarChartComponent
+                data={pm25Data}
+                title="PM2.5"
+                barColor="#FFC300"
+              />
             </div>
-
-            {/* BOTTOM RIGHT: DATA CARDS */}
-            <div className="bg-gray-200 rounded-lg shadow-lg p-3 grid grid-cols-2 gap-3 h-[100%]">
-              <DataCard type="CO2" data_number={sensor2Data.CO2} unit="ppm" changes={3}/>
-              <DataCard type="Temperature (C)" data_number={sensor2Data.TempC} unit="°C" changes={4}/>
-              <DataCard type="Temperature (F)" data_number={sensor2Data.TempF} unit="°F" changes={-2}/>
-              <DataCard type="Humidity" data_number={sensor2Data.Humidity} unit="%" changes={-1}/>
-            </div>
-          </div>
-        </div>
+          )}
+        </motion.div>
       </div>
     </div>
   );
 };
 
-export default AdminPage;
+export default RoomVisualizationPage;

@@ -90,7 +90,7 @@ const AdminPage = () => {
         </div>
 
         {/* SENSOR 2 */}
-        <div className="mt-4"> {/* Added margin-top to push down Sensor 2 */}
+        <div className="mt-10"> {/* Increased margin-top to push down Sensor 2 */}
           <h2 className="text-lg font-bold mb-2">Sensor 2</h2>
           <div className="grid grid-cols-2 gap-3">
             {/* BOTTOM LEFT: DATA CARDS */}
