@@ -40,7 +40,7 @@ const RoomVisualizationPage = () => {
   useEffect(() => {
     const fetchModel = async () => {
       try {
-        const response = await fetch("http://localhost:5000/download/1.glb");
+        const response = await fetch("http://localhost:5000/download/3.glb");
         if (!response.ok) throw new Error("Failed to fetch model");
 
         const blob = await response.blob();

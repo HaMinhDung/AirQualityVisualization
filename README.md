@@ -1,11 +1,19 @@
 #  Management Dashboard
 
+Frontend: 
 ## Getting Started
+
+tải dependance: 
+node.js 
+npm install để tải những thư viện cần thiết
+npm install parapharse nữa
+npm install axios
+
 
 First, run the development server:
 
 ```bash
-npm run dev
+    npm run dev
 # or
 yarn dev
 # or
@@ -24,3 +32,5 @@ To learn more about Next.js, take a look at the following resources:
 
 - [Lama Dev Youtube Channel](https://youtube.com/lamadev) 
 - [Next.js](https://nextjs.org/learn)"#decenttralized-app" 
+
+Backend: 
