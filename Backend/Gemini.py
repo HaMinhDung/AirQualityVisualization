@@ -2,7 +2,7 @@ from flask import jsonify
 import google.generativeai as genai
 import os
 from gtts import gTTS
-from playsound import playsound
+
 import time
 
 # API Key và cấu hình Generative AI

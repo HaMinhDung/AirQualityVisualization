@@ -1,1 +1,6 @@
+flask
+flask-cors
 trimesh
+google-generativeai
+gtts
+playsound
