@@ -10,7 +10,7 @@ const menuItems = [
     title: "MENU",
     items: [
       { icon: "/home.png", label: "Home", href: "/admin", visible: ["admin", "user", "developer"] },
-      { icon: "/building.png", label: "3D Model", href: "/list/3dmodel", visible: ["admin", "developer"] },
+      { icon: "/building.png", label: "3D Model", href: "/Upload", visible: ["admin", "developer"] },
       {
         icon: "/data.png",
         label: "Data",

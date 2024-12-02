@@ -6,44 +6,48 @@ import axios from 'axios';
 const FileUpload: React.FC = () => {
     const [file, setFile] = useState<File | null>(null);
     const [message, setMessage] = useState<string>('');
-    const [models, setModels] = useState<string[]>([]); // Danh sách file 3D
-    const [selectedFile, setSelectedFile] = useState<string>(''); // File được chọn để xóa
+    const [models, setModels] = useState<string[]>([]);
+    const [selectedFile, setSelectedFile] = useState<string>('');
+    const [loading, setLoading] = useState<boolean>(false);
 
-    // Hàm xử lý thay đổi file được chọn
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setFile(event.target.files[0]);
         }
     };
 
-    // Hàm tải lên file
     const handleUpload = async () => {
         if (!file) {
             setMessage('Please select a file to upload.');
             return;
         }
 
+        if (models.length >= 3) {
+            setMessage('Maximum number of models reached. Please delete a model before uploading a new one.');
+            return;
+        }
+
         const formData = new FormData();
         formData.append('file', file);
+        setLoading(true);
 
         try {
             const response = await axios.post('http://localhost:5000/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
             setMessage(response.data.message);
-            fetchModels(); // Tải lại danh sách file sau khi upload thành công
+            fetchModels();
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                setMessage(error.response.data.error);
-            } else {
-                setMessage('An error occurred while uploading the file.');
-            }
+            setMessage(
+                axios.isAxiosError(error) && error.response
+                    ? error.response.data.error
+                    : 'An error occurred while uploading the file.'
+            );
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Lấy danh sách các file 3D từ server
     const fetchModels = async () => {
         try {
             const response = await axios.get('http://localhost:5000/models');
@@ -53,53 +57,80 @@ const FileUpload: React.FC = () => {
         }
     };
 
-    // Hàm xóa file
     const handleDelete = async () => {
         if (!selectedFile) {
             setMessage('Please select a file to delete.');
             return;
         }
 
+        setLoading(true);
         try {
             const response = await axios.delete(`http://localhost:5000/delete/${selectedFile}`);
             setMessage(response.data.message);
-            fetchModels(); // Cập nhật lại danh sách file sau khi xóa
+            setSelectedFile('');
+            await fetchModels();
         } catch (error) {
             setMessage('Failed to delete the file.');
+        } finally {
+            setLoading(false);
         }
     };
 
-    // Lấy danh sách file 3D khi component load
     useEffect(() => {
         fetchModels();
     }, []);
 
     return (
-        <div>
-            <div>
-                <input type="file" onChange={handleFileChange} />
-                <button onClick={handleUpload}>Upload File</button>
+        <div className="max-w-lg mx-auto p-6 bg-gray-100 rounded-lg shadow-md">
+            <div className="mb-4">
+                <input
+                    type="file"
+                    onChange={handleFileChange}
+                    className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none"
+                />
+                <button
+                    onClick={handleUpload}
+                    disabled={loading}
+                    className="w-full mt-2 py-2 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75 border border-blue-700"
+                >
+                    {loading ? 'Uploading...' : 'Upload File'}
+                </button>
             </div>
-            {message && <p>{message}</p>}
+            {message && <p className="text-sm text-gray-600">{message}</p>}
 
-            <div>
-                <h3>Existing 3D Models</h3>
-                <ul>
+            <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-2">Existing 3D Models</h3>
+                <ul className="divide-y divide-gray-200">
                     {models.length > 0 ? (
                         models.map((model, index) => (
-                            <li key={index}>
-                                {model}
-                                <button onClick={() => setSelectedFile(model)}>Select to Delete</button>
+                            <li key={index} className="py-2 flex items-center justify-between">
+                                <span>{model}</span>
+                                <button
+                                    onClick={() => setSelectedFile(model)}
+                                    className={`py-1 px-3 text-sm font-medium rounded-lg shadow-md border ${
+                                        selectedFile === model
+                                            ? 'bg-red-600 text-white border-red-700'
+                                            : 'bg-gray-200 text-gray-800 border-gray-300'
+                                    } hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75`}
+                                >
+                                    {selectedFile === model ? 'Selected' : 'Select to Delete'}
+                                </button>
                             </li>
                         ))
                     ) : (
-                        <p>No models available</p>
+                        <p className="text-sm text-gray-600">No models available</p>
                     )}
                 </ul>
             </div>
 
-            <div>
-                <button onClick={handleDelete}>Delete Selected File</button>
+            <div className="mt-6">
+                <button
+                    onClick={handleDelete}
+                    disabled={!selectedFile || loading}
+                    className="w-full py-2 px-4 bg-red-600 text-white font-semibold rounded-lg shadow-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 border border-red-700"
+                >
+                    {loading ? 'Deleting...' : 'Delete Selected File'}
+                </button>
             </div>
         </div>
     );
