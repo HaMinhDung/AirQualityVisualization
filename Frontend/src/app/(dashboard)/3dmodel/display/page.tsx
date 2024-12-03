@@ -4,12 +4,15 @@ import { Canvas } from "@react-three/fiber";
 import { Html, useGLTF } from "@react-three/drei";
 import { motion } from "framer-motion";
 import BarChartComponent from "@/components/3dModelBarChart";
+import axios from 'axios';
 
 const RoomVisualizationPage = () => {
   const [showDataAnalytics, setShowDataAnalytics] = useState(false);
   const [modelUrl, setModelUrl] = useState(null);
+  const [models, setModels] = useState<string[]>([]);
+  const [selectedModel, setSelectedModel] = useState<string>('');
 
-  // Dữ liệu phân tích (tĩnh)
+  // Static data for analytics
   const temperatureData = [
     { name: "Mon", value: 45 },
     { name: "Tue", value: 50 },
@@ -36,34 +39,55 @@ const RoomVisualizationPage = () => {
     setShowDataAnalytics((prev) => !prev);
   };
 
-  // Hàm tải file từ server
+  // Fetch available models from backend
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/models');
+        const modelsList = response.data.models;
+        setModels(modelsList);
+        // Set default model to the first one in the list
+        if (modelsList.length > 0) {
+          setSelectedModel(modelsList[0]);
+        }
+      } catch (error) {
+        console.error('Error fetching models:', error);
+      }
+    };
+
+    fetchModels();
+  }, []);
+
+  // Fetch the selected model from the server
   useEffect(() => {
     const fetchModel = async () => {
+      if (!selectedModel) return;
+
       try {
-        const response = await fetch("http://localhost:5000/download/1.glb");
+        const response = await fetch(`http://localhost:5000/download/${selectedModel}`);
         if (!response.ok) throw new Error("Failed to fetch model");
 
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
-        setModelUrl(url); // Lưu URL của mô hình vào state
+        setModelUrl(url); // Save the model URL to state
       } catch (error) {
         console.error("Error fetching model:", error);
       }
     };
 
     fetchModel();
-  }, []);
+  }, [selectedModel]);
 
-  // Component Model để hiển thị mô hình 3D
+  // Model component to display the 3D model
   const Model = () => {
-    if (!modelUrl) return null; // Chỉ hiển thị khi modelUrl đã được tải
+    if (!modelUrl) return null; // Only display when modelUrl is loaded
 
-    const gltf = useGLTF(modelUrl); // Nạp mô hình từ URL
+    const gltf = useGLTF(modelUrl); // Load model from URL
 
     return (
       <>
         <primitive object={gltf.scene} scale={1} />
-        {/* Ví dụ thêm các cảm biến */}
+        {/* Example sensors */}
         <mesh position={[1, 1, 0]}>
           <sphereGeometry args={[0.1, 32, 32]} />
           <meshStandardMaterial color="red" />
@@ -88,8 +112,23 @@ const RoomVisualizationPage = () => {
 
   return (
     <div className="relative bg-gradient-to-b from-gray-900 to-gray-200">
-      {/* Nội dung chính */}
+      {/* Main content */}
       <div className="relative" style={{ width: "100%", height: "100vh" }}>
+        {/* Model Selector */}
+        <div className="absolute top-4 left-4 z-10">
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            className="bg-white border border-gray-300 rounded-md py-2 px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+            {models.map((model) => (
+              <option key={model} value={model}>
+                {model}
+              </option>
+            ))}
+          </select>
+        </div>
+
         <Canvas
           camera={{
             position: [1.9, 11.38, 13.44],
@@ -109,7 +148,7 @@ const RoomVisualizationPage = () => {
           <Model />
         </Canvas>
 
-        {/* Nút hiển thị thêm dữ liệu */}
+        {/* Button to show more data */}
         <div className="absolute top-4 right-4 z-50">
           <span
             onClick={toggleDataAnalytics}
@@ -119,7 +158,7 @@ const RoomVisualizationPage = () => {
           </span>
         </div>
 
-        {/* Phần hiển thị dữ liệu */}
+        {/* Data display section */}
         <motion.div
           initial={{ width: 0, opacity: 0 }}
           animate={
