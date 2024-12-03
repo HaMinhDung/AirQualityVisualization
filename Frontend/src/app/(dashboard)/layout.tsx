@@ -1,5 +1,6 @@
 import Menu from "@/components/Menu";
 import Navbar from "@/components/Navbar";
+import ChatPopup from "@/components/ChatPopup";
 
 export default function DashboardLayout({
   children,
@@ -25,6 +26,9 @@ export default function DashboardLayout({
           <div className="h-full w-full">{children}</div>
         </div>
       </div>
+
+      {/* Chat Popup */}
+      <ChatPopup />
     </div>
   );
 }

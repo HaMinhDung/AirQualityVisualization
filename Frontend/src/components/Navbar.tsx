@@ -1,3 +1,4 @@
+"use client";
 import Image from "next/image";
 
 const Navbar = () => {
@@ -6,7 +7,7 @@ const Navbar = () => {
       {/* LEFT SIDE: Logo and Page Name */}
       <div className="flex items-center gap-4">
         <Image src="/vinuni_logo.png" alt="Vinuni Logo" width={32} height={32} />
-        <span className="text-lg font-bold">Air quality visualization</span> {/* Replace "Dashboard" with the actual page name if dynamic */}
+        <span className="text-lg font-bold">Dashboard</span>
       </div>
 
       {/* RIGHT SIDE: Icons and User Info */}

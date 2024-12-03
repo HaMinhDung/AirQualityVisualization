@@ -23,8 +23,7 @@ const menuItems = [
         ],
         visible: ["admin", "developer"],
       },
-      { icon: "/3d-model.png", label: "Simulation", href: "/list/parents", visible: ["admin", "developer"] },
-    ],
+      { icon: "/3d-model.png", label: "Simulation", href: "/list/3dmodel", visible: ["admin", "developer"] },    ],
   },
   {
     title: "OTHER",
