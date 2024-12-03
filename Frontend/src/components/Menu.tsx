@@ -11,12 +11,12 @@ const menuItems = [
     items: [
       { icon: "/home.png", label: "Home", href: "/admin", visible: ["admin", "user", "developer"] },
       { 
-        icon: "/building.png", 
+        icon: "/3d-model.png", 
         label: "3D Model", 
         href: "#",
         dropdown: [
-          { icon: "/3d-display.png", label: "Display 3D Models", href: "/list/3dmodel" },
-          { icon: "/3d-manage.png", label: "Manage 3D Models", href: "/Upload" },
+          { icon: "/3d-display.png", label: "Display 3D Models", href: "/3dmodel/display" },
+          { icon: "/3d-manage.png", label: "Manage 3D Models", href: "/3dmodel/manage" },
         ],
         visible: ["admin", "developer"] 
       },
@@ -46,55 +46,68 @@ const menuItems = [
 
 const Menu = () => {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  const [clickedItem, setClickedItem] = useState<string | null>(null);
+
+  const isDropdownVisible = (itemLabel: string) => {
+    return hoveredItem === itemLabel || clickedItem === itemLabel;
+  };
 
   return (
     <div className="fixed h-full bg-white border-r w-48">
       {/* Menu Items */}
       {menuItems.map((section) => (
-        <div className="flex flex-col gap-2" key={section.title}>
+        <div className="flex flex-col" key={section.title}>
           <span className="text-gray-400 font-light my-4 pl-4">
             {section.title}
           </span>
-          {section.items.map((item) => {
-            if (item.visible.includes(role)) {
-              return (
-                <div 
-                  key={item.label} 
-                  className="relative"
-                  onMouseEnter={() => setHoveredItem(item.label)}
-                  onMouseLeave={() => setHoveredItem(null)}
-                >
-                  <Link
-                    href={item.href}
-                    className="flex items-center gap-4 text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100"
-                    onClick={(e) => {
-                      if (item.dropdown) {
-                        e.preventDefault();
-                      }
-                    }}
+          <div className="flex flex-col">
+            {section.items.map((item) => {
+              if (item.visible.includes(role)) {
+                return (
+                  <div 
+                    key={item.label} 
+                    className="relative"
+                    onMouseEnter={() => setHoveredItem(item.label)}
+                    onMouseLeave={() => setHoveredItem(null)}
                   >
-                    <Image src={item.icon} alt="" width={20} height={20} />
-                    <span>{item.label}</span>
-                  </Link>
-                  {/* Dropdown Menu */}
-                  {item.dropdown && hoveredItem === item.label && (
-                    <div className="absolute left-0 w-full bg-white shadow-lg rounded-md mt-1 py-2">
-                      {item.dropdown.map((subItem) => (
-                        <Link
-                          key={subItem.label}
-                          href={subItem.href}
-                          className="flex items-center gap-4 px-4 py-2 text-gray-500 hover:bg-gray-100"
-                        >
-                          <Image src={subItem.icon} alt={subItem.label} width={20} height={20} />
-                          <span>{subItem.label}</span>
-                        </Link>
-                      ))}
+                    <div 
+                      className="flex items-center gap-4 text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+                        if (item.dropdown) {
+                          setClickedItem(clickedItem === item.label ? null : item.label);
+                        } else if (item.href) {
+                          window.location.href = item.href;
+                        }
+                      }}
+                    >
+                      <div className="w-5 h-5 relative flex-shrink-0">
+                        <Image src={item.icon} alt="" fill style={{ objectFit: 'contain' }} />
+                      </div>
+                      <span>{item.label}</span>
                     </div>
-                  )}
-                </div>
-              );
-            }
-          })}
+                    
+                    {/* Dropdown Menu */}
+                    {item.dropdown && isDropdownVisible(item.label) && (
+                      <div className="bg-gray-50 py-1">
+                        {item.dropdown.map((subItem) => (
+                          <Link
+                            key={subItem.label}
+                            href={subItem.href}
+                            className="flex items-center gap-4 px-8 py-2 text-gray-500 hover:bg-gray-100"
+                          >
+                            <div className="w-5 h-5 relative flex-shrink-0">
+                              <Image src={subItem.icon} alt={subItem.label} fill style={{ objectFit: 'contain' }} />
+                            </div>
+                            <span className="text-sm">{subItem.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+            })}
+          </div>
         </div>
       ))}
     </div>

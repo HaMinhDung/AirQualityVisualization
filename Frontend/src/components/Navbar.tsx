@@ -1,13 +1,16 @@
 "use client";
 import Image from "next/image";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
     <div className="w-full flex items-center justify-between p-4 bg-white shadow-md">
       {/* LEFT SIDE: Logo and Page Name */}
       <div className="flex items-center gap-4">
-        <Image src="/vinuni_logo.png" alt="Vinuni Logo" width={32} height={32} />
-        <span className="text-lg font-bold">Dashboard</span>
+        <Link href="/admin">
+          <Image src="/vinuni_logo.png" alt="Vinuni Logo" width={48} height={48} />
+        </Link>
+        <span className="text-lg font-bold select-none">Air Quality Visualization</span>
       </div>
 
       {/* RIGHT SIDE: Icons and User Info */}
