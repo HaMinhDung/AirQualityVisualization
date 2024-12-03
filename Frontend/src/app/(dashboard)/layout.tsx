@@ -17,7 +17,7 @@ export default function DashboardLayout({
       {/* BELOW NAVBAR: Content Area */}
       <div className="flex flex-1">
         {/* LEFT: Menu Bar */}
-        <div className="w-16 bg-white">
+        <div className="w-48 bg-white">
           <Menu />
         </div>
 

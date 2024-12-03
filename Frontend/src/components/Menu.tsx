@@ -10,7 +10,16 @@ const menuItems = [
     title: "MENU",
     items: [
       { icon: "/home.png", label: "Home", href: "/admin", visible: ["admin", "user", "developer"] },
-      { icon: "/building.png", label: "3D Model", href: "/Upload", visible: ["admin", "developer"] },
+      { 
+        icon: "/building.png", 
+        label: "3D Model", 
+        href: "#",
+        dropdown: [
+          { icon: "/3d-display.png", label: "Display 3D Models", href: "/list/3dmodel" },
+          { icon: "/3d-manage.png", label: "Manage 3D Models", href: "/Upload" },
+        ],
+        visible: ["admin", "developer"] 
+      },
       {
         icon: "/data.png",
         label: "Data",
@@ -23,7 +32,7 @@ const menuItems = [
         ],
         visible: ["admin", "developer"],
       },
-      { icon: "/3d-model.png", label: "Simulation", href: "/list/3dmodel", visible: ["admin", "developer"] },    ],
+    ],
   },
   {
     title: "OTHER",
@@ -36,61 +45,48 @@ const menuItems = [
 ];
 
 const Menu = () => {
-  const [expanded, setExpanded] = useState(false);
-  const [dataAnalysisOpen, setDataAnalysisOpen] = useState(false);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
   return (
-    <div
-      className={`transition-all duration-300 fixed h-full bg-white border-r ${
-        expanded ? "w-48" : "w-16"
-      }`}
-    >
-      {/* Toggle Button */}
-      <div className="flex justify-center mb-4">
-        <button
-          onClick={() => setExpanded(!expanded)}
-          className="hover:bg-gray-200 p-2 rounded"
-        >
-          <Image src="/menu.png" alt="Toggle Menu" width={24} height={24} />
-        </button>
-      </div>
-
+    <div className="fixed h-full bg-white border-r w-48">
       {/* Menu Items */}
       {menuItems.map((section) => (
         <div className="flex flex-col gap-2" key={section.title}>
-          {expanded && (
-            <span className="text-gray-400 font-light my-4 pl-4">
-              {section.title}
-            </span>
-          )}
+          <span className="text-gray-400 font-light my-4 pl-4">
+            {section.title}
+          </span>
           {section.items.map((item) => {
             if (item.visible.includes(role)) {
               return (
-                <div key={item.label} className="relative">
+                <div 
+                  key={item.label} 
+                  className="relative"
+                  onMouseEnter={() => setHoveredItem(item.label)}
+                  onMouseLeave={() => setHoveredItem(null)}
+                >
                   <Link
                     href={item.href}
                     className="flex items-center gap-4 text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100"
                     onClick={(e) => {
                       if (item.dropdown) {
                         e.preventDefault();
-                        setDataAnalysisOpen(!dataAnalysisOpen);
                       }
                     }}
                   >
                     <Image src={item.icon} alt="" width={20} height={20} />
-                    {expanded && <span>{item.label}</span>}
+                    <span>{item.label}</span>
                   </Link>
-                  {/* Dropdown for Data Analysis */}
-                  {item.dropdown && dataAnalysisOpen && (
-                    <div className="ml-8 mt-2 flex flex-col gap-2">
+                  {/* Dropdown Menu */}
+                  {item.dropdown && hoveredItem === item.label && (
+                    <div className="absolute left-0 w-full bg-white shadow-lg rounded-md mt-1 py-2">
                       {item.dropdown.map((subItem) => (
                         <Link
                           key={subItem.label}
                           href={subItem.href}
-                          className="flex items-center gap-4 text-gray-500 hover:bg-gray-100 p-2 rounded"
+                          className="flex items-center gap-4 px-4 py-2 text-gray-500 hover:bg-gray-100"
                         >
                           <Image src={subItem.icon} alt={subItem.label} width={20} height={20} />
-                          {expanded && <span>{subItem.label}</span>}
+                          <span>{subItem.label}</span>
                         </Link>
                       ))}
                     </div>
