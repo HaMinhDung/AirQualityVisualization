@@ -1,13 +1,42 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
-from werkzeug.utils import secure_filename
 import os
 from Gemini import chatbot_response
 import trimesh
+from plotGraph import save_all_graphs
+import subprocess
+import matplotlib
+matplotlib.use('Agg')
 
 app = Flask(__name__)
+
+# Simple CORS configuration
 CORS(app)
 
+# Configure static folder with correct relative path
+app.static_folder = 'static'
+app.static_url_path = '/static'
+
+# Initialize graphs and Node.js server when Flask starts
+def init_app():
+    try:
+        # Create static/graphs directory if it doesn't exist
+        graphs_dir = os.path.join('static/graphs')
+        os.makedirs(graphs_dir, exist_ok=True)
+        
+        # Generate initial graphs in the main thread
+        print("Generating initial graphs...")
+        save_all_graphs()
+        
+        # Start Node.js server
+        print("Starting Node.js server...")
+        node_process = subprocess.Popen(['node', 'index.js'], 
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+        
+        print("Initialization complete!")
+    except Exception as e:
+        print(f"Initialization error: {e}")
 
 # Endpoint chatbot
 @app.route('/chatbot', methods=['POST'])
@@ -121,6 +150,52 @@ def delete_file(filename):
         return jsonify({"message": f"File {filename} deleted successfully"}), 200
     except Exception as e:
         return jsonify({"error": f"Failed to delete file: {str(e)}"}), 500
+
+# Add new endpoint to generate/update graphs
+@app.route('/update-graphs', methods=['POST'])
+def update_graphs():
+    try:
+        save_all_graphs()
+        return jsonify({"message": "Graphs updated successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": f"Failed to update graphs: {str(e)}"}), 500
+
+# Add endpoints to serve each graph
+@app.route('/graphs/<graph_type>', methods=['GET'])
+def get_graph(graph_type):
+    valid_types = ['pm25', 'temperature', 'humidity']
+    if graph_type not in valid_types:
+        return jsonify({"error": "Invalid graph type"}), 400
+    
+    graph_path = os.path.join('static/graphs', f'{graph_type}.png')
+    print(f"Attempting to serve graph from: {graph_path}")  # Debug print
+    
+    if not os.path.exists(graph_path):
+        try:
+            save_all_graphs()  # Generate graphs if they don't exist
+        except Exception as e:
+            print(f"Failed to generate graphs: {e}")  # Debug print
+            return jsonify({"error": f"Failed to generate graphs: {str(e)}"}), 500
+    
+    try:
+        # Add headers to prevent caching and allow access
+        response = send_file(
+            graph_path, 
+            mimetype='image/png',
+            as_attachment=False,
+            download_name=f'{graph_type}.png'
+        )
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        return response
+    except Exception as e:
+        print(f"Error serving file: {e}")  # Debug print
+        return jsonify({"error": "Failed to serve graph"}), 500
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    init_app()
+    # Run with host='0.0.0.0' to allow external access
+    app.run(host='0.0.0.0', port=5000, debug=True)
 
