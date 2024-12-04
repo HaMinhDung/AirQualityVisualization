@@ -4,6 +4,7 @@ import os
 from Gemini import chatbot_response
 import trimesh
 from plotGraph import save_all_graphs
+from Upload import find_next_available_file
 import subprocess
 import matplotlib
 matplotlib.use('Agg')
@@ -77,12 +78,13 @@ def upload_file():
         return jsonify({"error": "Unsupported file format"}), 400
 
     # Kiểm tra số lượng file trong thư mục 3D models
-    existing_files = os.listdir(models_folder)
-    file_count = len(existing_files)
+    folder_path = "3D models"
+    base_name = ""
+    extension = ".glb"
 
-    if file_count >= 3:
-        return jsonify({"error": "Exceeded the allowed number of 3 models, please delete to add more"}), 400
+    next_available = find_next_available_file(folder_path, base_name, extension)
 
+ 
     # Lưu file tạm với tên và phần mở rộng chính xác
     _, ext = os.path.splitext(file.filename)
     temp_path = os.path.join(models_folder, "temp_file" + ext)
@@ -97,14 +99,14 @@ def upload_file():
             return jsonify({"error": "File could not be processed by trimesh"}), 400
         
         # Chuyển đổi và lưu thành định dạng .glb
-        new_filename = f"{file_count + 1}.glb"
+        new_filename = f"{next_available}.glb"
         new_file_path = os.path.join(models_folder, new_filename)
         mesh.export(new_file_path, file_type='glb')
 
         # Xóa file tạm
         os.remove(temp_path)
 
-        return jsonify({"message": "File uploaded successfully", "file_count": file_count + 1}), 200
+        return jsonify({"message": "File uploaded successfully"}), 200
 
     except Exception as e:
         # Xóa file tạm nếu xảy ra lỗi

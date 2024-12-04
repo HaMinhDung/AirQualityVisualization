@@ -27,16 +27,34 @@ def convert_obj_to_glb(file_path):
     mesh.export(new_file_path, file_type='glb')
     print(f"Tệp đã được chuyển đổi và lưu tại: {new_file_path}")
     
-    # Xóa tệp .obj cũ
-    os.remove(file_path)
-    print(f"Tệp cũ {file_path} đã bị xóa.")
-    
-    return new_file_path
+
+
+
+def find_next_available_file(folder_path, base_name, extension=".glb"):
+    """
+    Tìm số nhỏ nhất chưa được sử dụng cho file có dạng base_nameX.extension (X là số nguyên dương).
+
+    Args:
+        folder_path (str): Đường dẫn tới thư mục.
+        base_name (str): Tên cơ bản của file, mặc định là "file".
+        extension (str): Phần mở rộng của file, mặc định là ".glb".
+
+    Returns:
+        int: Số nhỏ nhất mà file `base_nameX.extension` chưa tồn tại.
+    """
+    x = 1
+    while True:
+        filename = f"{base_name}{x}{extension}"
+        file_path = os.path.join(folder_path, filename)
+        if not os.path.isfile(file_path):
+            return x
+        x += 1
+
 
 # Ví dụ sử dụng
-file_path = "c:/Users/dungc/Downloads/vhmnifalctmo-lego551232512424/lego obj.obj"  # Thay bằng đường dẫn tệp của bạn
-try:
-    new_file_path = convert_obj_to_glb(file_path)
-    print(f"Chuyển đổi thành công: {new_file_path}")
-except Exception as e:
-    print(f"Đã xảy ra lỗi: {e}")
+"""folder_path = "3D models"
+base_name = ""
+extension = ".glb"
+
+next_available = find_next_available_file(folder_path, base_name, extension)
+print(f"Số tiếp theo khả dụng là: {next_available}")"""

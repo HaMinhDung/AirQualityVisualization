@@ -22,7 +22,7 @@ const FileUpload: React.FC = () => {
             return;
         }
 
-        if (models.length >= 3) {
+        if (models.length >= 20) {
             setMessage('Maximum number of models reached. Please delete a model before uploading a new one.');
             return;
         }
