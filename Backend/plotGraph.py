@@ -24,7 +24,7 @@ service_account = {
   
 
 cred = credentials.Certificate(service_account)
-firebase_admin.initialize_app(cred, {
+default_app = firebase_admin.initialize_app(cred, {
     'databaseURL': 'https://fireship-dd0fc-default-rtdb.asia-southeast1.firebasedatabase.app'
 })
 
@@ -218,7 +218,38 @@ def save_all_graphs():
     plot_humidity(data['dates'], data['humidity'], ax)
     fig.savefig(os.path.join(graphs_folder, 'humidity.png'), bbox_inches='tight')
     plt.close(fig)
+def fetch_data2():
+    try:
+        ref = db.reference('stations/AirVisual_Outdoor_-_VinOutdoor/historical/daily')
+        data = ref.get()
+        
+        if not data:
+            return "No data returned from Firebase"
+        
+        results = []  # Initialize a list to store the results
+        for day_data in data:
+            if day_data and isinstance(day_data, dict):
+                try:
+                    timestamp = datetime.strptime(day_data['ts'], "%Y-%m-%dT%H:%M:%S.%fZ")
+                    humidity = float(day_data['hm'])
+                    temperature = float(day_data['tp'])
+                    pm25_conc = float(day_data['pm25']['conc'])
+                    pm25_aqius = day_data['pm25']['aqius']
+                    pm25_aqicn = day_data['pm25']['aqicn']
+                    pm10_conc = float(day_data['pm10']['conc'])
+                    pm10_aqius = day_data['pm10']['aqius']
+                    pm10_aqicn = day_data['pm10']['aqicn']
+                    pm1 = float(day_data['pm1'])
+                    pr = float(day_data['pr'])
 
+                    results.append(f"Date: {timestamp}, Temperature: {temperature}, Humidity: {humidity}, PM2.5: {pm25_conc}, PM2.5 AQI US: {pm25_aqius}, PM2.5 AQI CN: {pm25_aqicn}, PM10: {pm10_conc}, PM10 AQI US: {pm10_aqius}, PM10 AQI CN: {pm10_aqicn}, PM1: {pm1}, Pressure: {pr}")
+                except (KeyError, ValueError) as e:
+                    print(f"Skipping invalid data point: {e}")
+                    continue
+        return "\n".join(results)  # Return the collected results as a single string
+    except Exception as e:
+        return f"Error fetching data: {e}"
+    
 if __name__ == '__main__':
     # Test database connection
     ref = db.reference('/')
@@ -248,3 +279,4 @@ if __name__ == '__main__':
         plt.close(fig3)
     else:
         print("No data available")
+
