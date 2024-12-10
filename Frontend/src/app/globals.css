@@ -2,6 +2,71 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base cursor styles */
+* {
+  cursor: default !important;
+  caret-color: transparent !important;
+}
+
+/* Interactive elements */
+a, 
+button, 
+[role="button"], 
+.cursor-pointer,
+select {
+  cursor: pointer !important;
+  caret-color: transparent !important;
+}
+
+/* Text selection styles */
+p, 
+h1, 
+h2, 
+h3, 
+h4, 
+h5, 
+h6, 
+span, 
+div:not(.select-none) {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+  caret-color: transparent !important;
+}
+
+/* Non-selectable elements */
+.select-none,
+button, 
+a, 
+[role="button"] {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  caret-color: transparent !important;
+}
+
+/* Override for text inputs to keep cursor */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  cursor: text !important;
+  caret-color: currentColor !important;
+}
+
+/* Hide text selection cursor */
+::selection {
+  background: rgba(0, 0, 255, 0.2);
+  color: inherit;
+}
+
+::-moz-selection {
+  background: rgba(0, 0, 255, 0.2);
+  color: inherit;
+}
+
 .react-calendar {
   width: 100% !important;
   border: none !important;

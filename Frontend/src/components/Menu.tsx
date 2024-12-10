@@ -71,7 +71,7 @@ const Menu = () => {
                     onMouseLeave={() => setHoveredItem(null)}
                   >
                     <div 
-                      className="flex items-center gap-4 text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100 cursor-pointer"
+                      className="flex items-center gap-4 text-gray-500 py-2 px-4 rounded-md hover:bg-gray-100 cursor-pointer select-none"
                       onClick={() => {
                         if (item.dropdown) {
                           setClickedItem(clickedItem === item.label ? null : item.label);

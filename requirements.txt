@@ -1,0 +1,9 @@
+flask
+flask-cors
+trimesh
+google-generativeai
+gtts
+playsound
+firebase-admin
+matplotlib
+pandas

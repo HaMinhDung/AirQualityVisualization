@@ -16,7 +16,7 @@ const Navbar = () => {
       {/* RIGHT SIDE: User Info */}
       <div className="flex items-center gap-4">
         {/* User Information */}
-        <div className="flex flex-col items-end">
+        <div className="flex flex-col items-end select-none">
           <span className="text-xs font-medium">We Ain't Byte</span>
           <span className="text-[10px] text-gray-500">Admin</span>
         </div>

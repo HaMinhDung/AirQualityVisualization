@@ -40,7 +40,7 @@ const ProfilePage = () => {
         </div>
 
         {/* Edit Profile Button */}
-        <button className="mt-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600">
+        <button className="mt-4 bg-blue-500 text-white py-2 px-6 rounded-md hover:bg-blue-600 select-none">
           Edit Profile
         </button>
       </div>

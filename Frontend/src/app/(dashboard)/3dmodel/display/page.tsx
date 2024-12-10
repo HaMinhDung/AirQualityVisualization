@@ -152,7 +152,7 @@ const RoomVisualizationPage = () => {
         <div className="absolute top-4 right-4 z-50">
           <span
             onClick={toggleDataAnalytics}
-            className="text-white underline cursor-pointer"
+            className="text-white underline cursor-pointer select-none"
           >
             {showDataAnalytics ? "Collapse" : "Show More"}
           </span>
