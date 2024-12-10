@@ -9,18 +9,19 @@ import os
 # Initialize Firebase Admin
 # Initialize Firebase Admin with hardcoded credentials
 service_account = {
-    "type": "service_account",
-    "project_id": "fireship-dd0fc",
-    "private_key_id": "289028618040f5fb7294cb873faaf1157bd0e465",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC91O0bvPKl+2tT\n3Mm7Fs10l9IuU9+avWDY8E8R/cmvIxos9NzMqwl+jmq/pGG2y7BJQtHEBNEuskWd\nQyu1cpiJ+7rrn/gn8ALWnoT0spQp/gVIREFrkD7wQ1JB4g1y5lxdEsVmeXWFV9Ik\nQ6H0ETheQ9SL1ivArXyYSjpdKKOmRV5Adjn3u2CM0yDjbveDampfmyj5mqfjnSfT\no94CF8gVUYhPFRaA7EOIriFHNBc49hsgHLDcFMupjz5DruhkIsA02T/2AG+1dpPw\nU6LjpHc7fetGZTz2NHe9iltY7smQ2Ztho4ZMBZhGNlktZkswZWG5XUT2i7dvNEPj\nULESW85VAgMBAAECggEACLc6/7gIKAjIH7yWYomke0LxOoFNVex2At/dsYTGes0Q\nyZmgfaEouW/OhOgGOH9Xo7V2rhpOhGdY/OR1oEoXqNYu+dyJZ0QEzVfP4PBGDzuD\ngJLpsgeYbC2bHD1Fws3C1d8jwxW2iJ3EnzefuvYDcYiJvLXjomAUxWU7EsXn5Z1b\ndjemTSsNImfwjkMIilHCijcISnmYaRI+pjU9vh8ckPo/4oM7RvHW7kgwJQ/xtnwh\np6l+cJw2tkBtlpCqn2D75DfBiWIjgY0mlu7mbNWlhxVXZXkysxXEzB0NH8l1bve1\nH9xZ/QRb4xSgjxibkE1K8UnYaIylsVJC6PkGxv3eLQKBgQDoOgGEqbbi6NbLqaRd\ngTKxZlfaJjzECOxXHQGZ0wSNMIPJtqAKToGhS1FjU+fakhPwkQSZy/93lNBXD0Mg\nW28+Emu66BizSM5jSA/XxbE8BOs7kfX/UXYpLkn/Kx+6+XOT16uMmxoaNLyQzrdS\nVC39qylecIPKYc5zwSSCfN2RnwKBgQDRQ99v5YL55ph0WOE/y7383j6V6GQGgmix\nXbyPRujNecqF9ClYlQMasy9xsvif0QKneJ7uIaONNsPZ7uP7E7WyhtmW/nLZH0Pe\n+aSU8d+h7OgQXopH6fUFqFzBhU35inRmWkjP+LI+OOh//e99gTHsz8YBX+lG+4kE\nAt6G5LsjiwKBgCghJfQD09vAOqX1CbcyxUzMj6/d3bBOjnC7TXSEd4vib1OjIGLH\nkDUMK+NLM4yco591n+Ln0pyadaoltAbaZg3G5yDkTKhmk2uqnzo9KlRh0Th5D5Zw\nQEf7fMQAcro/sw5APZ/NiaQvqsonPpyWeWAVfM+aB9woLKHqJWH7K9qnAoGAY3LW\n941h3jMZFom6mh/QLSDNK16iUnmdGVVLq+dt8WBEv74V/BPswr6O+ICuKP0iPsZS\n+SYhXJW/I42k6IgoXCw7scdAezChh5CqB2Ke/YvhiQ30t1JW8BZf5lPch4+l25Ji\ncftlca6Hx3O9Ya6JNFpVZgfXi7U0GyTl7cM7sBsCgYAFCzEuVb3V/nO9yJoQRqbE\nF549KqVNepfSnm50ovYqdMTaEGKkPlQ8TwmdB1yN7zCBEly9L33ndNcidGqB2lef\nTqvYwZ1RG+J6JO02jEUiYJyVyXt+R2lmEjyaJYKbdTQ6JlEckCc9VfA3Rr/Me4f2\nRrlttNJ8Qz1NeQVW7tH/tQ==\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-9znjh@fireship-dd0fc.iam.gserviceaccount.com",
-    "client_id": "111968766451127202642",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9znjh%40fireship-dd0fc.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-  }
+  "type": "service_account",
+  "project_id": "fireship-dd0fc",
+  "private_key_id": "1f2f1211a2ca16d97e422a38d0efe47d83186c8d",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCTAqU1uauKgDSK\nKgaSe3417m9f/uv5Gcw66Uoo1n/zhzwXeSkZjLhaJuDXxUl3s2i5ZcoqCy1gutw4\nf7pr3HQu07s0TS8Z/8S5j2mvUBMAsUyAWm8xGddGGq5jNJkvmRLnXrq787rvO2Tl\nfeLOF1Tg1PvFW1FrTj0FbKtEJuuBb90bUwq4Pb3BWS8XBikUf/WcHAO8l2NhLEYJ\nvTd3FVYa4Jhv9/5K/39N15PXkuiKdX1nQsw/NR8rnH7kZ7PviCSA8xGG9eqScFdN\nfdb+nPqC0kUSTk1wxlv6prVGZy9WD4qYrV+DyPTH5WZVw76ICKSoM32dmAYwgdQI\ncXbHtNipAgMBAAECggEALHDCx5xypmI+P7wXk4WAcEY9ZewWoo1xZyep0vGQ6Wnq\nuP/X9FDNU/dnxeJuZKCYGl+SfyY02AZ01yGJldylRJieAWAJypa+fgfD/4q5y95N\nDYoJDfNNV/Rt3jCC1Fg2VjoVQgcabgJq7FMjUoDMGFFaMN17nfAfUzn4Bhir3csh\nJKNqTULgfnZbZz8aKwbZH3EAnfHGyrlX1tFkjS0V+G2L0fVCNCaj9mzqQbv1IKtk\nQLE/jTcUciw0yiX6kXU3Z3KTUR2Vf4ChvOSqDDjgO93GNIApgKFxPV9njnSpAh2n\nPSCq+Htt5jBgYbIwWm7DDNGsuKnU+wDd/ff6xUu+5wKBgQDPQOYdeQhMi0fvXXxH\nqrdWWeKXCwtGMl4WWdlnb2b+kCxvzQtAAmi71TEPb1z0pNe7ic/TI9aFzKdMn5tS\nL5oIA62qc6JC4fJUcIKkmF/TlaKOglb1V5wFNf0AFoIFl70nhq2QZMoKptOrLBdK\nGEZ+Zx6x5b80MhV1uMTiIg7M7wKBgQC1lmXimNnyOxoy8ZstbIkq8IFcAx+6vPnD\nogwzi9fiNJEf42jyB69OmW2beHUGl9b52PwQSgCn1w6xCIpk2GZ6whRzlNE6PaKf\nORUhtLUZX/hzwndcORiIzcOzayoj2PiOfYd0SrlxLgHCRNJIYM5wMrc8LA7w+3+d\njx0w4X7j5wKBgQCS8/x2Z2xYAeY2tj25/zVSGBfPa3hKBMqr5Hd/nQEVfRrVBzlz\n4IFsteS8ggUSPpPtGPFwT5f7dTom3YDfTHtWNW19T9J8xAL0lnY7yQMhXpdNnuOT\nwNQS6c4DsvHsj0QC8767hIux88pgM7orwnyxgeLE1xe1JdILj8Ciau29pwKBgQCT\nY1GrTLmKHWK0etqjUfc7/R5iWr7ESWLI4ZzZseY2Wsh4g5LI8GfgejQ2/tytz0zU\nWsStTAOgN7RbCT2bgPIdLa5/6gixJxn59tEqHIzp3bXB79QF7On3EFyKIq9/jTqi\nHU12nLhMHzWaQ1YTHVAyTVfg5Tnza483idP9uunNfQKBgGJnN9uSVhrI/qJUxIbq\nOtAgnScOS1lVtqyXY1zksHVIpPjcYY+dI6qadeCDd9ouSgawWdOICN35yVB6QFHK\nQTwNQ2iG/DjG+5QWb3+eSqg09S2FjbXVkQSjHONBwR3FLlFJ9lCJpFNl2FGNbzZ9\nnnucgjbSzrgZdhqddCjrJEjv\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-9znjh@fireship-dd0fc.iam.gserviceaccount.com",
+  "client_id": "111968766451127202642",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-9znjh%40fireship-dd0fc.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
+
   
 
 cred = credentials.Certificate(service_account)
@@ -218,6 +219,7 @@ def save_all_graphs():
     plot_humidity(data['dates'], data['humidity'], ax)
     fig.savefig(os.path.join(graphs_folder, 'humidity.png'), bbox_inches='tight')
     plt.close(fig)
+
 def fetch_data2():
     try:
         ref = db.reference('stations/AirVisual_Outdoor_-_VinOutdoor/historical/daily')
@@ -257,6 +259,7 @@ if __name__ == '__main__':
     
     # Then try your regular code
     data = fetch_data()
+ 
     if data:
         # Create three separate figures
         # PM2.5 Graph

@@ -19,7 +19,7 @@ from plotGraph import fetch_data2
 
 
 # API Key và cấu hình Generative AI
-os.environ["API_KEY"] = "AIzaSyAhuxSrWShqIKQUbptlrfIUnfsIg1XADv0"
+os.environ["API_KEY"] = "AIzaSyAbTbqRQ1N6qjqTFnJQCqG2U6GXDRYiBSg"
 genai.configure(api_key=os.environ["API_KEY"])
 
 generation_configuration = {"temperature": 0.7, "top_p": 1, "top_k": 1}
@@ -80,7 +80,7 @@ website_guidance = website_guidance.replace('\n', '')
 
 
 Data = fetch_data2()
-print(type(Data))
+
 
 #Data = "Here is latest data come from the sensor, read this: " + Data
 
@@ -95,6 +95,8 @@ Chat = model.start_chat(
         {"role": "model", "parts": "Sure"},
         {"role": "user", "parts": "What is the latest sensor information?"},
         {"role": "model", "parts": Data},
+        {"role": "user", "parts": "Good, I want you to use this data to provide user information to analyse the air quality, can you?"},
+        {"role": "model", "parts": "sure"},
    ]
 )
 

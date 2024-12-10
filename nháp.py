@@ -1,4 +1,4 @@
-"""import firebase_admin
+import firebase_admin
 from firebase_admin import credentials, db
 from datetime import datetime
 
@@ -55,17 +55,14 @@ def fetch_data():
     except Exception as e:
         print(f"Error fetching data: {e}")
         return None
-system_message1 = 
-SYSTEM MESSAGE: Your name is Green, you are a voice assistant for an air quality monitoring website. 
+system_message1 =  """SYSTEM MESSAGE: Your name is Green, you are a voice assistant for an air quality monitoring website. 
 Respond concisely and accurately to questions about air quality data and guide 
 users in using the website. Prioritize facts, clarity, and brevity in your answers. 
 You might be asked in different languages, especially Vietnamese and English, keep that in mind.
-
+"""
 
 if __name__ == '__main__':
     a = fetch_data()
     print(a)
     print(type(a))
     print(type(system_message1))
-
-"""
