@@ -9,7 +9,7 @@ const menuItems = [
   {
     title: "MENU",
     items: [
-      { icon: "/home.png", label: "Home", href: "/admin", visible: ["admin", "user", "developer"] },
+      { icon: "/home.png", label: "Home", href: "/dashboard", visible: ["admin", "user", "developer"] },
       { 
         icon: "/3d-model.png", 
         label: "3D Model", 
