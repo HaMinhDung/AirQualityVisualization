@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Html, useGLTF } from "@react-three/drei";
+import { Html, useGLTF, OrbitControls } from "@react-three/drei";
 import { motion } from "framer-motion";
 import BarChartComponent from "@/components/3dModelBarChart";
 import axios from 'axios';
@@ -11,6 +11,7 @@ const RoomVisualizationPage = () => {
   const [modelUrl, setModelUrl] = useState(null);
   const [models, setModels] = useState<string[]>([]);
   const [selectedModel, setSelectedModel] = useState<string>('');
+  const [cameraPosition, setCameraPosition] = useState([5, 5, 5]);
 
   // Static data for analytics
   const temperatureData = [
@@ -110,6 +111,7 @@ const RoomVisualizationPage = () => {
     );
   };
 
+
   return (
     <div className="relative bg-gradient-to-b from-gray-900 to-gray-200">
       {/* Main content */}
@@ -131,7 +133,7 @@ const RoomVisualizationPage = () => {
 
         <Canvas
           camera={{
-            position: [1.9, 11.38, 13.44],
+            position: cameraPosition,
             rotation: [
               -52.98 * (Math.PI / 180),
               -0.71 * (Math.PI / 180),
@@ -146,13 +148,14 @@ const RoomVisualizationPage = () => {
           <pointLight position={[10, 10, 10]} />
           <directionalLight position={[5, 5, 5]} intensity={1} castShadow />
           <Model />
+          <OrbitControls enableDamping />
         </Canvas>
 
         {/* Button to show more data */}
         <div className="absolute top-4 right-4 z-50">
           <span
             onClick={toggleDataAnalytics}
-            className="text-white underline cursor-pointer select-none"
+            className="text-white underline cursor-pointer"
           >
             {showDataAnalytics ? "Collapse" : "Show More"}
           </span>
