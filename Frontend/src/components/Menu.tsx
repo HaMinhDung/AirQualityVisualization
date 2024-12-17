@@ -17,6 +17,7 @@ const menuItems = [
         dropdown: [
           { icon: "/3d-display.png", label: "Display 3D Models", href: "/3dmodel/display" },
           { icon: "/3d-manage.png", label: "Manage 3D Models", href: "/3dmodel/manage" },
+          { icon: "/sensor.png", label: "Sensor Placement", href: "/3dmodel/sensors" }
         ],
         visible: ["admin", "developer"] 
       },
