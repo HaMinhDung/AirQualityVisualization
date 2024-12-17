@@ -1,0 +1,10 @@
+model SensorData {
+  id          String   @id @default(cuid())
+  modelName   String   @unique
+  temperature Json[]
+  humidity    Json[]
+  pm25        Json[]
+  timestamp   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+} 

@@ -5,6 +5,7 @@ import { Html, useGLTF, OrbitControls } from "@react-three/drei";
 import { motion } from "framer-motion";
 import BarChartComponent from "@/components/3dModelBarChart";
 import axios from 'axios';
+import { getRoomSensorData } from '@/data/sensorData';
 
 const RoomVisualizationPage = () => {
   const [showDataAnalytics, setShowDataAnalytics] = useState(false);
@@ -13,28 +14,7 @@ const RoomVisualizationPage = () => {
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [cameraPosition, setCameraPosition] = useState([5, 5, 5]);
 
-  // Static data for analytics
-  const temperatureData = [
-    { name: "Mon", value: 45 },
-    { name: "Tue", value: 50 },
-    { name: "Wed", value: 55 },
-    { name: "Thu", value: 40 },
-    { name: "Fri", value: 60 },
-  ];
-  const humidityData = [
-    { name: "Mon", value: 70 },
-    { name: "Tue", value: 65 },
-    { name: "Wed", value: 75 },
-    { name: "Thu", value: 80 },
-    { name: "Fri", value: 72 },
-  ];
-  const pm25Data = [
-    { name: "Mon", value: 30 },
-    { name: "Tue", value: 35 },
-    { name: "Wed", value: 28 },
-    { name: "Thu", value: 33 },
-    { name: "Fri", value: 25 },
-  ];
+  const { temperatureData, humidityData, pm25Data } = getRoomSensorData(selectedModel);
 
   const toggleDataAnalytics = () => {
     setShowDataAnalytics((prev) => !prev);
@@ -88,25 +68,6 @@ const RoomVisualizationPage = () => {
     return (
       <>
         <primitive object={gltf.scene} scale={1} />
-        {/* Example sensors */}
-        <mesh position={[1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color="red" />
-          <Html distanceFactor={10}>
-            <div className="p-1 bg-gray-800 text-white text-xs rounded">
-              Sensor 1
-            </div>
-          </Html>
-        </mesh>
-        <mesh position={[-1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color="blue" />
-          <Html distanceFactor={10}>
-            <div className="p-1 bg-gray-800 text-white text-xs rounded">
-              Sensor 2
-            </div>
-          </Html>
-        </mesh>
       </>
     );
   };
