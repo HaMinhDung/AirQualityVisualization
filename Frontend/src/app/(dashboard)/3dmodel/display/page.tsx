@@ -5,11 +5,7 @@ import { Html, useGLTF, OrbitControls } from "@react-three/drei";
 import { motion } from "framer-motion";
 import BarChartComponent from "@/components/3dModelBarChart";
 import axios from 'axios';
-<<<<<<< HEAD
 import { room1SensorData } from "@/data/sensorData/room1.glb";
-=======
-import { getRoomSensorData } from '@/data/sensorData';
->>>>>>> 87caa04586d0e3a98a843ea881493bd757be1185
 
 const RoomVisualizationPage = () => {
   const [showDataAnalytics, setShowDataAnalytics] = useState(false);
@@ -18,12 +14,8 @@ const RoomVisualizationPage = () => {
   const [selectedModel, setSelectedModel] = useState<string>('');
   const [cameraPosition, setCameraPosition] = useState([5, 5, 5]);
 
-<<<<<<< HEAD
   // Remove static data and use imported data
   const { temperatureData, humidityData, pm25Data } = room1SensorData;
-=======
-  const { temperatureData, humidityData, pm25Data } = getRoomSensorData(selectedModel);
->>>>>>> 87caa04586d0e3a98a843ea881493bd757be1185
 
   const toggleDataAnalytics = () => {
     setShowDataAnalytics((prev) => !prev);
