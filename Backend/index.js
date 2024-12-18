@@ -14,7 +14,7 @@ admin.initializeApp({
 
 const db = admin.database();
 //const stationName = 'Hai BaTrung'; // Example station name
-const stationApi = 'https://device.iqair.com/v2/668505f27c0fe1ce46dc81a2/'; // Replace with your actual device API URL
+const stationApi = 'https://device.iqair.com/v2/668505f27c0fe1ce46dc81a2'; // Replace with your actual device API URL
 const IQAIR_API_KEY = process.env.IQAIR_API_KEY;
 
 // Function to Fetch and Save Data to Firebase
