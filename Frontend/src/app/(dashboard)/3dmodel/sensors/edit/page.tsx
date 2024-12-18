@@ -11,9 +11,11 @@ const EditSensorPlan = () => {
   const [sensors, setSensors] = useState<{ id: number; name: string; position: [number, number, number] }[]>([]);
   const [numSensors, setNumSensors] = useState<number>(0);
   const [renamingSensor, setRenamingSensor] = useState<number | null>(null);
-  const [placingSensor, setPlacingSensor] = useState<number | null>(null); // Track which sensor to place
-  const [sensorCursorPos, setSensorCursorPos] = useState<[number, number, number] | null>(null); // Track sensor cursor position
+  const [placingSensor, setPlacingSensor] = useState<number | null>(null);
+  const [sensorCursorPos, setSensorCursorPos] = useState<[number, number, number] | null>(null);
   const [cameraPosition] = useState([5, 5, 5]);
+  const [plans, setPlans] = useState<{ name: string; model: string }[]>([]); // State for plans
+  const [selectedPlan, setSelectedPlan] = useState<string>(""); // State for selected plan
 
   useEffect(() => {
     const fetchModels = async () => {
@@ -28,6 +30,20 @@ const EditSensorPlan = () => {
     };
 
     fetchModels();
+  }, []);
+
+  // Fetch created plans from the sensors page
+  useEffect(() => {
+    const fetchPlans = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/plans"); // Adjust the endpoint as necessary
+        setPlans(response.data.plans || []); // Assuming the response has a 'plans' array
+      } catch (error) {
+        console.error("Error fetching plans:", error);
+      }
+    };
+
+    fetchPlans();
   }, []);
 
   useEffect(() => {
@@ -120,6 +136,22 @@ const EditSensorPlan = () => {
 
   return (
     <div className="relative bg-gradient-to-b from-gray-900 to-gray-200">
+      {/* Dropdown for selecting plans */}
+      <div className="absolute top-4 left-4 z-10">
+        <select
+          value={selectedPlan}
+          onChange={(e) => setSelectedPlan(e.target.value)}
+          className="bg-white border border-gray-300 rounded-md py-2 px-4 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        >
+          <option value="">Select a Plan</option>
+          {plans.map((plan) => (
+            <option key={plan.name} value={plan.name}>
+              {plan.name}
+            </option>
+          ))}
+        </select>
+      </div>
+
       <div className="absolute top-4 right-4 z-50 p-4 bg-white rounded shadow-lg w-64">
         <h2 className="text-lg font-bold mb-4">Edit Plan</h2>
         <label className="block mb-2">

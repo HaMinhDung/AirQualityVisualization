@@ -88,25 +88,6 @@ const RoomVisualizationPage = () => {
     return (
       <>
         <primitive object={gltf.scene} scale={1} />
-        {/* Example sensors */}
-        <mesh position={[1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color="red" />
-          <Html distanceFactor={10}>
-            <div className="p-1 bg-gray-800 text-white text-xs rounded">
-              Sensor 1
-            </div>
-          </Html>
-        </mesh>
-        <mesh position={[-1, 1, 0]}>
-          <sphereGeometry args={[0.1, 32, 32]} />
-          <meshStandardMaterial color="blue" />
-          <Html distanceFactor={10}>
-            <div className="p-1 bg-gray-800 text-white text-xs rounded">
-              Sensor 2
-            </div>
-          </Html>
-        </mesh>
       </>
     );
   };
