@@ -19,7 +19,7 @@ from plotGraph import fetch_data2
 
 
 # API Key và cấu hình Generative AI
-os.environ["API_KEY"] = "AIzaSyAbTbqRQ1N6qjqTFnJQCqG2U6GXDRYiBSg"
+os.environ["API_KEY"] = "YOUR API KEY"
 genai.configure(api_key=os.environ["API_KEY"])
 
 generation_configuration = {"temperature": 0.7, "top_p": 1, "top_k": 1}
