@@ -9,12 +9,12 @@ const serviceAccount = require('./serviceAccount.json');
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://fireship-dd0fc-default-rtdb.asia-southeast1.firebasedatabase.app' // Replace with your Firebase URL
+  databaseURL: 'YOUR FIREBASE URL' // Replace with your Firebase URL
 });
 
 const db = admin.database();
 //const stationName = 'Hai BaTrung'; // Example station name
-const stationApi = 'https://device.iqair.com/v2/668505f27c0fe1ce46dc81a2'; // Replace with your actual device API URL
+const stationApi = 'YOUR IQAIR API KEY'; // Replace with your actual device API URL
 const IQAIR_API_KEY = process.env.IQAIR_API_KEY;
 
 // Function to Fetch and Save Data to Firebase
