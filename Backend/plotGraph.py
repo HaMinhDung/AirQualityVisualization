@@ -43,6 +43,9 @@ def fetch_data():
         temperature = []
         humidity = []
         pm25 = []
+        pm10 = []  # New list for PM10
+        pm1 = []    # New list for PM1
+        pr = []     # New list for Pressure
         
         # Data is a list where each index represents a day
         for day_data in data:
@@ -56,6 +59,9 @@ def fetch_data():
                     humidity.append(float(day_data['hm']))
                     temperature.append(float(day_data['tp']))
                     pm25.append(float(day_data['pm25']['conc']))  # Get PM2.5 concentration
+                    pm10.append(float(day_data['pm10']['conc']))    # Get PM10 concentration
+                    pm1.append(float(day_data['pm1']))              # Get PM1 concentration
+                    pr.append(float(day_data['pr']))                 # Get Pressure
                 except (KeyError, ValueError) as e:
                     print(f"Skipping invalid data point: {e}")
                     continue
@@ -64,7 +70,10 @@ def fetch_data():
             'dates': dates,
             'temperature': temperature,
             'humidity': humidity,
-            'pm25': pm25
+            'pm25': pm25,
+            'pm10': pm10,  # Include PM10 in the return
+            'pm1': pm1,    # Include PM1 in the return
+            'pr': pr       # Include Pressure in the return
         }
     except Exception as e:
         print(f"Error fetching data: {e}")
@@ -151,6 +160,45 @@ def plot_humidity(dates, humidity_values, ax=None):
     ax.tick_params(axis='x', rotation=45)
     plt.tight_layout()
 
+def plot_pm10(dates, pm10_values, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 6))
+    
+    ax.bar(dates, pm10_values, color='blue', label='PM10')
+    ax.set_title('PM10 Levels Over Time')
+    ax.set_xlabel('Time')
+    ax.set_ylabel('PM10 (µg/m³)')
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    ax.tick_params(axis='x', rotation=45)
+    plt.tight_layout()
+
+def plot_pm1(dates, pm1_values, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 6))
+    
+    ax.bar(dates, pm1_values, color='green', label='PM1')
+    ax.set_title('PM1 Levels Over Time')
+    ax.set_xlabel('Time')
+    ax.set_ylabel('PM1 (µg/m³)')
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    ax.tick_params(axis='x', rotation=45)
+    plt.tight_layout()
+
+def plot_pr(dates, pr_values, ax=None):
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 6))
+    
+    ax.bar(dates, pr_values, color='orange', label='Pressure')
+    ax.set_title('Pressure Over Time')
+    ax.set_xlabel('Time')
+    ax.set_ylabel('Pressure (hPa)')
+    ax.grid(True, alpha=0.3)
+    ax.legend()
+    ax.tick_params(axis='x', rotation=45)
+    plt.tight_layout()
+
 def generate_graph(graph_type):
     data = fetch_data()
     if not data:
@@ -182,12 +230,14 @@ def generate_all_graphs():
     if not data:
         raise Exception("No data available")
 
-    # Create subplots for all three graphs
-    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(12, 18))
+    # Create subplots for all graphs
+    fig, (ax1, ax2, ax3, ax4, ax5) = plt.subplots(5, 1, figsize=(12, 30))
     
     plot_pm25(data['dates'], data['pm25'], ax1)
     plot_temperature(data['dates'], data['temperature'], ax2)
     plot_humidity(data['dates'], data['humidity'], ax3)
+    plot_pm10(data['dates'], data['pm10'], ax4)  # New PM10 graph
+    plot_pm1(data['dates'], data['pm1'], ax5)    # New PM1 graph
     
     plt.tight_layout()
     plt.close(fig)  # Clean up
@@ -199,7 +249,7 @@ def save_all_graphs():
         raise Exception("No data available")
 
     # Create directory for graphs if it doesn't exist
-    graphs_folder = "./AirQualityVisualization/Backend/static/graphs"
+    graphs_folder = "static/graphs"
     os.makedirs(graphs_folder, exist_ok=True)
 
     # Generate and save PM2.5 graph
@@ -219,6 +269,24 @@ def save_all_graphs():
     plot_humidity(data['dates'], data['humidity'], ax)
     fig.savefig(os.path.join(graphs_folder, 'humidity.png'), bbox_inches='tight')
     plt.close(fig)
+
+    # Generate and save PM10 graph
+    fig, ax = plt.subplots(figsize=(12, 6))
+    plot_pm10(data['dates'], data['pm10'], ax)
+    fig.savefig(os.path.join(graphs_folder, 'pm10.png'), bbox_inches='tight')
+    plt.close(fig)
+
+    # Generate and save PM1 graph
+    fig, ax = plt.subplots(figsize=(12, 6))
+    plot_pm1(data['dates'], data['pm1'], ax)
+    fig.savefig(os.path.join(graphs_folder, 'pm1.png'), bbox_inches='tight')
+    plt.close(fig)
+
+    # Generate and save Pressure graph
+    fig, ax = plt.subplots(figsize=(12, 6))
+    plot_pr(data['dates'], data['pr'], ax)
+    fig.savefig(os.path.join(graphs_folder, 'pressure.png'), bbox_inches='tight')
+    plt.close(fig) 
 
 def fetch_data2():
     try:
@@ -261,7 +329,7 @@ if __name__ == '__main__':
     data = fetch_data()
  
     if data:
-        # Create three separate figures
+        # Create figures for all graphs
         # PM2.5 Graph
         fig1, ax1 = plt.subplots(figsize=(12, 6))
         plot_pm25(data['dates'], data['pm25'], ax1)
@@ -273,6 +341,18 @@ if __name__ == '__main__':
         # Humidity Graph
         fig3, ax3 = plt.subplots(figsize=(12, 6))
         plot_humidity(data['dates'], data['humidity'], ax3)
+
+        # PM10 Graph
+        fig4, ax4 = plt.subplots(figsize=(12, 6))
+        plot_pm10(data['dates'], data['pm10'], ax4)
+
+        # PM1 Graph
+        fig5, ax5 = plt.subplots(figsize=(12, 6))
+        plot_pm1(data['dates'], data['pm1'], ax5)
+
+        # Pressure Graph
+        fig6, ax6 = plt.subplots(figsize=(12, 6))
+        plot_pr(data['dates'], data['pr'], ax6)
         
         plt.show()
         
@@ -280,6 +360,9 @@ if __name__ == '__main__':
         plt.close(fig1)
         plt.close(fig2)
         plt.close(fig3)
+        plt.close(fig4)
+        plt.close(fig5)
+        plt.close(fig6)
     else:
         print("No data available")
 
