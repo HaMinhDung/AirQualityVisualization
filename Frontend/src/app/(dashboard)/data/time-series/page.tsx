@@ -12,8 +12,11 @@ const Card = ({ children, className = "" }: { children: React.ReactNode, classNa
 export default function TimeSeriesPage() {
   const [graphs, setGraphs] = useState({
     pm25: '',
+    pm10: '',
+    pm1: '',
     temperature: '',
-    humidity: ''
+    humidity: '',
+    pressure: ''
   })
 
   // Function to fetch and update a single graph
@@ -47,8 +50,11 @@ export default function TimeSeriesPage() {
   // Function to fetch all graphs
   const fetchAllGraphs = () => {
     fetchGraph('pm25')
+    fetchGraph('pm10')
+    fetchGraph('pm1')
     fetchGraph('temperature')
     fetchGraph('humidity')
+    fetchGraph('pressure')
   }
 
   // Initial fetch and setup interval for periodic updates
@@ -88,6 +94,32 @@ export default function TimeSeriesPage() {
             )}
           </Card>
 
+          {/* PM10 Graph */}
+          <Card className="p-4">
+            <h3 className="text-lg font-semibold mb-4">PM10 Levels</h3>
+            {graphs.pm10 && (
+              <img 
+                src={graphs.pm10} 
+                alt="PM10 Graph" 
+                className="w-full h-auto"
+                style={{ maxHeight: '300px', objectFit: 'contain' }}
+              />
+            )}
+          </Card>
+
+          {/* PM1 Graph */}
+          <Card className="p-4">
+            <h3 className="text-lg font-semibold mb-4">PM1 Levels</h3>
+            {graphs.pm1 && (
+              <img 
+                src={graphs.pm1} 
+                alt="PM1 Graph" 
+                className="w-full h-auto"
+                style={{ maxHeight: '300px', objectFit: 'contain' }}
+              />
+            )}
+          </Card>
+
           {/* Temperature Graph */}
           <Card className="p-4">
             <h3 className="text-lg font-semibold mb-4">Temperature</h3>
@@ -108,6 +140,19 @@ export default function TimeSeriesPage() {
               <img 
                 src={graphs.humidity} 
                 alt="Humidity Graph" 
+                className="w-full h-auto"
+                style={{ maxHeight: '300px', objectFit: 'contain' }}
+              />
+            )}
+          </Card>
+
+          {/* Pressure Graph */}
+          <Card className="p-4">
+            <h3 className="text-lg font-semibold mb-4">Pressure</h3>
+            {graphs.pressure && (
+              <img 
+                src={graphs.pressure} 
+                alt="Pressure Graph" 
                 className="w-full h-auto"
                 style={{ maxHeight: '300px', objectFit: 'contain' }}
               />
