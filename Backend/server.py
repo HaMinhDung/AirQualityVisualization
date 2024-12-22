@@ -3,7 +3,7 @@ from flask_cors import CORS
 import os
 from Gemini import chatbot_response
 import trimesh
-from plotGraph import save_all_graphs 
+from plotGraph import save_all_graphs
 from Upload import find_next_available_file
 import subprocess
 import matplotlib
@@ -165,7 +165,7 @@ def update_graphs():
 # Add endpoints to serve each graph
 @app.route('/graphs/<graph_type>', methods=['GET'])
 def get_graph(graph_type):
-    valid_types = ['pm25', 'temperature', 'humidity']
+    valid_types = ['pm25', 'pm10', 'pm1', 'temperature', 'humidity', 'pressure']
     if graph_type not in valid_types:
         return jsonify({"error": "Invalid graph type"}), 400
     
