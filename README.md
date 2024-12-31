@@ -96,8 +96,10 @@ This project is designed to manage and visualize 3D models, and sensor data, and
    pip install -r requirements.txt
    npm install
    ```
-
-3. Run the server:
+3. Input API:
+   Follow developer manual document
+   
+4. Run the server:
    ```bash
    python server.py
    ```
