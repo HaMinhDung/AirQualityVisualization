@@ -106,7 +106,7 @@ This project is designed to manage and visualize 3D models, and sensor data, and
 
 1. Navigate to the frontend directory:
    ```bash
-   cd frontend
+   cd Frontend
    ```
 
 2. Install dependencies:
