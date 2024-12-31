@@ -94,6 +94,7 @@ This project is designed to manage and visualize 3D models, and sensor data, and
    ```bash
    cd Backend
    pip install -r requirements.txt
+   npm install
    ```
 
 3. Run the server:
