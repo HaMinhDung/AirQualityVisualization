@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 import pandas as pd
 import os
+import glob
 
 # Initialize Firebase Admin
 # Initialize Firebase Admin with hardcoded credentials
@@ -251,6 +252,11 @@ def save_all_graphs():
     # Create directory for graphs if it doesn't exist
     graphs_folder = "static/graphs"
     os.makedirs(graphs_folder, exist_ok=True)
+
+        # Remove all existing PNG files in the directory
+    files = glob.glob(os.path.join(graphs_folder, '*.png'))
+    for f in files:
+        os.remove(f)
 
     # Generate and save PM2.5 graph
     fig, ax = plt.subplots(figsize=(12, 6))
